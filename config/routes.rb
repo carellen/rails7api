@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  namespace :api, defaults: { format: :json }, constraints: { subdomain: 'api' }, path: '/' do
+    scope module: :v1, constraints: Constraints::Api.new(version: 1, default: true) do
+    end
+  end
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  match '*unmatched', to: 'application#route_not_found', via: :all
 end
