@@ -66,6 +66,9 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    apipie-rails (0.8.2)
+      actionpack (>= 5.0)
+      activesupport (>= 5.0)
     bcrypt (3.1.16)
     blueprinter (0.25.3)
     bootsnap (1.15.0)
@@ -160,6 +163,7 @@ PLATFORMS
   x86_64-darwin-18
 
 DEPENDENCIES
+  apipie-rails (~> 0.8)
   bcrypt (~> 3.1.7)
   blueprinter (~> 0.25)
   bootsnap

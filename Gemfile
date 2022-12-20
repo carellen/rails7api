@@ -40,5 +40,6 @@ group :development do
   # gem "spring"
 end
 
+gem "apipie-rails", "~> 0.8"
 gem "blueprinter", "~> 0.25"
 gem "oj", "~> 3.13"

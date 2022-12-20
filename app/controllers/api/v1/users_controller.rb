@@ -3,14 +3,21 @@ module Api
     class UsersController < ApplicationController
       before_action :set_user, except: %i[index create]
 
+      api :GET, '/users', 'Get users list'
       def index
         render json: UserBlueprint.render(User.all, root: :users), status: :ok
       end
 
+      api :GET, '/users/:id', 'Get user by ID'
+      param :id, :number, required: true
       def show
         render json: UserBlueprint.render(@user, root: :user), status: :ok
       end
 
+      api :POST, '/users', 'Create new user'
+      param :email, String, required: true
+      param :password, String, required: true
+      param :password_confirmation, String, required: true
       def create
         @user = User.new(user_params)
         if @user.save
@@ -25,6 +32,11 @@ module Api
         end
       end
 
+      api :PATCH, '/users/:id', 'Update user'
+      param :id, :number, required: true
+      param :email, String
+      param :password, String
+      param :password_confirmation, String
       def update
         if @user.update(user_params)
           render json: UserBlueprint.render(@user, root: :user), status: :ok
@@ -38,6 +50,8 @@ module Api
         end
       end
 
+      api :DELETE, '/users/:id', 'Delete user by ID'
+      param :id, :number, required: true
       def destroy
         @user.destroy
       end
