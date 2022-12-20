@@ -4,17 +4,17 @@ module Api
       before_action :set_user, except: %i[index create]
 
       def index
-        render json: { users: User.all }, status: :ok
+        render json: UserBlueprint.render(User.all, root: :users), status: :ok
       end
 
       def show
-        render json: { user: @user }, status: :ok
+        render json: UserBlueprint.render(@user, root: :user), status: :ok
       end
 
       def create
         @user = User.new(user_params)
         if @user.save
-          render json: { user: @user }, status: :created
+          render json: UserBlueprint.render(@user, root: :user), status: :created
         else
           render json: {
             error: {
@@ -27,7 +27,7 @@ module Api
 
       def update
         if @user.update(user_params)
-          render json: { user: @user }, status: :ok
+          render json: UserBlueprint.render(@user, root: :user), status: :ok
         else
           render json: {
             error: {

@@ -40,3 +40,5 @@ group :development do
   # gem "spring"
 end
 
+gem "blueprinter", "~> 0.25"
+gem "oj", "~> 3.13"
