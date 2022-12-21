@@ -1,8 +1,10 @@
+subdomain = Rails.env.production? ? ENV['API_SUBDOMAIN'] : 'api'
+
 Rails.application.routes.draw do
   # api documentation, visit /apidocs
   apipie
 
-  namespace :api, defaults: { format: :json }, constraints: { subdomain: 'api' }, path: '/' do
+  namespace :api, defaults: { format: :json }, constraints: ({ subdomain: subdomain } if subdomain.present?), path: '/' do
     scope module: :v1, constraints: Constraints::Api.new(version: 1, default: true) do
       # public lists
       resources :lists, only: %i[index show]
