@@ -24,3 +24,6 @@
 
 # Ignore IDE files
 /.idea
+
+# Ignore IDE files
+.env

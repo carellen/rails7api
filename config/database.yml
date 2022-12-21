@@ -82,5 +82,6 @@ test:
 production:
   <<: *default
   database: rails7api_production
-  username: rails7api
-  password: <%= ENV["RAILS7API_DATABASE_PASSWORD"] %>
+  host: <%= ENV["POSTGRES_HOST"] %>
+  username: <%= ENV["POSTGRES_USER"] %>
+  password: <%= ENV["POSTGRES_PASSWORD"] %>

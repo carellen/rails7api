@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:14.1'
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  app:
+    depends_on:
+      - 'postgres'
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    ports:
+      - '3000:3000'
+    env_file:
+      - '.env'
+
+  web:
+    depends_on:
+      - 'app'
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+    ports:
+      - '80:80'
+    env_file:
+      - '.env'
+
+volumes:
+  app:
+  postgres:
+  web:
