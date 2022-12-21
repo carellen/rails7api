@@ -2,7 +2,7 @@ class UsersControllerTest < ApiBaseTest
   test 'should return users list' do
     get api_users_path
 
-    users_from_response =  json_response[:users].map { |user| user[:id] }.sort
+    users_from_response = json_response[:users].map { |user| user[:id] }.sort
     users_from_db = users.map { |user| user[:id] }.sort
 
     assert_equal users_from_response, users_from_db
@@ -40,7 +40,7 @@ class UsersControllerTest < ApiBaseTest
   end
 
   test 'should delete user' do
-    user = users(:one)
+    user = users(:three) # should not have associated lists!
 
     assert_difference('User.count', -1) do
       delete api_user_path(user.id), headers: auth_header_for(user)

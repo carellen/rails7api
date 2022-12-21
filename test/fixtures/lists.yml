@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one_private:
+  name: My Private List
+  shared: false
+  user: one
+
+one_public:
+  name: My Public List
+  shared: true
+  user: one
+
+two_private:
+  name: MyString
+  shared: false
+  user: two
+
+two_public:
+  name: My Public List
+  shared: true
+  user: two
