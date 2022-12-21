@@ -8,6 +8,14 @@ module JsonHelper
   end
 end
 
+module JwtLoginHelper
+  def auth_header_for(user)
+    token = Providers::JwtAuth.login(user: user)[:result]
+
+    { 'Authorization' => "Bearer #{token}" }
+  end
+end
+
 class ActiveSupport::TestCase
   parallelize(workers: :number_of_processors)
 
@@ -16,4 +24,5 @@ end
 
 class ActionDispatch::IntegrationTest
   include JsonHelper
+  include JwtLoginHelper
 end

@@ -35,13 +35,24 @@ class UsersControllerTest < ApiBaseTest
     user_params = { email: 'updated@user.com' }
 
     assert_changes('user.reload.email', from: user.email, to: user_params[:email]) do
-      patch api_user_path(user.id), params: user_params
+      patch api_user_path(user.id), params: user_params, headers: auth_header_for(user)
     end
   end
 
   test 'should delete user' do
+    user = users(:one)
+
     assert_difference('User.count', -1) do
-      delete api_user_path(users(:one).id)
+      delete api_user_path(user.id), headers: auth_header_for(user)
+    end
+  end
+
+  test 'should not process unauthorized action' do
+    user = users(:one)
+    current_user = users(:two)
+
+    assert_no_difference('User.count', -1) do
+      delete api_user_path(user.id), headers: auth_header_for(current_user)
     end
   end
 end

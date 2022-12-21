@@ -1,6 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      before_action :authenticate_user!, only: %i[update destroy]
       before_action :set_user, except: %i[index create]
 
       api :GET, '/users', 'Get users list'
@@ -20,16 +21,10 @@ module Api
       param :password_confirmation, String, required: true
       def create
         @user = User.new(user_params)
-        if @user.save
-          render json: UserBlueprint.render(@user, root: :user), status: :created
-        else
-          render json: {
-            error: {
-              type: 'invalid_params_error',
-              message: @user.errors.full_messages
-            }
-          }, status: :unprocessable_entity
-        end
+
+        return unprocessable(message: @user.errors.full_messages) unless @user.save
+
+        render json: UserBlueprint.render(@user, root: :user), status: :created
       end
 
       api :PATCH, '/users/:id', 'Update user'
@@ -38,21 +33,18 @@ module Api
       param :password, String
       param :password_confirmation, String
       def update
-        if @user.update(user_params)
-          render json: UserBlueprint.render(@user, root: :user), status: :ok
-        else
-          render json: {
-            error: {
-              type: 'invalid_params_error',
-              message: @user.errors.full_messages
-            }
-          }, status: :unprocessable_entity
-        end
+        return unauthorized if current_user != @user
+
+        return unprocessable(message: @user.errors.full_messages) unless @user.update(user_params)
+
+        render json: UserBlueprint.render(@user, root: :user), status: :ok
       end
 
       api :DELETE, '/users/:id', 'Delete user by ID'
       param :id, :number, required: true
       def destroy
+        return unauthorized if current_user != @user
+
         @user.destroy
       end
 
@@ -65,12 +57,7 @@ module Api
       def set_user
         @user = User.find(params[:id]) # consider using guid instead!
       rescue ActiveRecord::RecordNotFound
-        render json: {
-          error: {
-            type: 'invalid_params_error',
-            message: 'User not found'
-          }
-        }, status: :not_found
+        record_not_found
       end
     end
   end

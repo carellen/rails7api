@@ -42,4 +42,5 @@ end
 
 gem "apipie-rails", "~> 0.8"
 gem "blueprinter", "~> 0.25"
+gem "jwt", "~> 2.5"
 gem "oj", "~> 3.13"
