@@ -25,5 +25,8 @@
 # Ignore IDE files
 /.idea
 
-# Ignore IDE files
+# Ignore ENV files
 .env
+
+# Ignore postrgres data
+/postgres/*
